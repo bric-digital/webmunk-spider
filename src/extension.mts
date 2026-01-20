@@ -39,7 +39,7 @@ class WebmunkSpiderExtensionModule extends WebmunkExtensionModule {
             '<div id="spidering_progress">' +
             '[progress bar]' +
             '</div>' +
-            '<iframe id="spider_frame" style="display: block; height: 2px; width: 100%; opacity: 0.0; border: thin solid blue;"></iframe>' +
+            '<iframe id="spider_frame" style="display: block; height: 5px; width: 100%; opacity: 1.0; border: thin solid blue;"></iframe>' +
             '</div>'
   }
 
@@ -49,10 +49,13 @@ class WebmunkSpiderExtensionModule extends WebmunkExtensionModule {
 
     const me = this  // eslint-disable-line @typescript-eslint/no-this-alias
 
-    if (uiDefinition.identifier == 'spider') {
+    if (uiDefinition.identifier === 'spider') {
       chrome.runtime.sendMessage({
         'messageType': 'checkSpidersReady'
       }).then((response) => {
+        console.log('checkSpidersReady:')
+        console.log(response)
+
         $('#outstanding_issues').hide()
         $('#start_spidering').hide()
         $('#spidering_progress').hide()
