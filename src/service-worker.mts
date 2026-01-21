@@ -5,6 +5,8 @@ export class WebmunkSpider {
   checkLogin(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       const loginListener = (message:any, sender:any, sendResponse:(response:any) => void):boolean => {
+        console.log('loginListener')
+        console.log(message)
         if (message.messageType === 'spiderLoginResults' && message.spiderName === this.name()) {
           if (message.loggedIn === false) {
             resolve(false)
