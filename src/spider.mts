@@ -11,6 +11,10 @@ export class WebmunkContentSpider {
   }
 
   toString():string {
+    return this.name()
+  }
+
+  name():string {
     return 'WebmunkContentSpider'
   }
 }
