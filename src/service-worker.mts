@@ -1,5 +1,5 @@
 import { WebmunkConfiguration } from '@bric/webmunk-core/extension'
-import webmunkCorePlugin, { WebmunkServiceWorkerModule, registerWebmunkModule } from '@bric/webmunk-core/service-worker'
+import webmunkCorePlugin, { WebmunkServiceWorkerModule, registerWebmunkModule, dispatchEvent } from '@bric/webmunk-core/service-worker'
 
 export class WebmunkSpider {
   checkLogin(): Promise<boolean> {
@@ -255,11 +255,6 @@ class WebmunkSpiderModule extends WebmunkServiceWorkerModule {
           chrome.runtime.sendMessage({
             messageType: 'spiderContent',
             url: spiderItem.url
-          }).then((results) => {
-            spiderItem.spider.processResults(spiderItem.url, results)
-              .then(() => {
-                continueSpidering(sendResponse)
-              })
           })
         }
       }
@@ -286,6 +281,16 @@ class WebmunkSpiderModule extends WebmunkServiceWorkerModule {
                 })
               }
             }
+          })
+
+          continueSpidering(sendResponse)
+
+          return
+        } else if (message.messageType === 'spiderResults') {
+          dispatchEvent({
+            name: 'webmunk-spider-result',
+            source: message.spiderName,
+            payload: message.payload
           })
 
           continueSpidering(sendResponse)
