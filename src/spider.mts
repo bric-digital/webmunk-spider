@@ -37,6 +37,10 @@ class WebmunkContentSpiderManager {
       }
     })
   }
+
+  toString():string {
+    return 'WebmunkContentSpiderManager'
+  }
 }
 
 const manager = new WebmunkContentSpiderManager()

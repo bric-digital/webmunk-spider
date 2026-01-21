@@ -39,7 +39,7 @@ class WebmunkSpiderExtensionModule extends WebmunkExtensionModule {
             '<div id="spidering_progress">' +
             '[progress bar]' +
             '</div>' +
-            '<iframe id="spider_frame" style="display: block; height: 5px; width: 100%; opacity: 1.0; border: thin solid blue;"></iframe>' +
+            '<iframe id="spider_frame" style="display: block; height: 200px; width: 100%; opacity: 1.0; border: thin solid blue;"></iframe>' +
             '</div>'
   }
 
