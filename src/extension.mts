@@ -14,6 +14,8 @@ class WebmunkSpiderExtensionModule extends WebmunkExtensionModule {
       } else if (message.messageType === 'spiderCheckLogin') {
         const url = message.url
 
+        console.log(`[extyension] loading login URL ${url}`)
+
         $('#spider_frame').attr('src', url)
 
         sendResponse('Loading')
