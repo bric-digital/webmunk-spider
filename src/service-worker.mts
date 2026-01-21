@@ -108,7 +108,7 @@ class WebmunkSpiderModule extends WebmunkServiceWorkerModule {
         console.log('IFRAME')
         console.log(details)
 
-        if (['sub_frame', 'main_frame'].includes(details.type)) {
+        if (['sub_frame', 'main_frame', 'script'].includes(details.type)) {
           self.setTimeout(() => {
             chrome.scripting.executeScript({
                 target: {
