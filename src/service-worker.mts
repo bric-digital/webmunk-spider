@@ -181,9 +181,9 @@ class WebmunkSpiderModule extends WebmunkServiceWorkerModule {
                 })
 
                 response.ready = false
-
-                checkSpider(sendResponse)
               }
+
+              checkSpider(sendResponse)
             })
         }
       }
