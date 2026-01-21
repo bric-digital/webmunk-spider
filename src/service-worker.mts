@@ -5,14 +5,11 @@ export class WebmunkSpider {
   checkLogin(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       const loginListener = (message:any, sender:any, sendResponse:(response:any) => void):boolean => {
-        console.log('loginListener')
-        console.log(message)
-
         if (message.messageType === 'spiderResults' && message.spiderName === this.name()) {
-          if (message.loggedIn) {
-            resolve(true)
-          } else {
+          if (message.loggedIn === false) {
             resolve(false)
+          } else {
+            resolve(true)
           }
 
           chrome.runtime.onMessage.removeListener(loginListener)
@@ -171,8 +168,6 @@ class WebmunkSpiderModule extends WebmunkServiceWorkerModule {
         } else {
           let spider = toCheck.pop()
 
-          console.log(`CHECKING LOGIN ON ${spider}...`)
-
           spider.checkLogin()
             .then((ready:boolean) => {
               if (ready === false) {
@@ -250,6 +245,32 @@ class WebmunkSpiderModule extends WebmunkServiceWorkerModule {
           })
         }
       }
+
+      const updateListener = (message:any, sender:any, sendResponse:(response:any) => void):boolean => {
+        if (message.messageType === 'spiderSources') {
+          this.registeredSpiders.forEach((spider:WebmunkSpider) => {
+            if (spider.name() === message.spiderName) {
+              if (message.urls === undefined) {
+                message.urls = []
+              }
+
+              for (let url of message.urls) {
+                console.log(`pushing ${url} for ${spider} to check...`)
+
+                toCheck.push({
+                  url,
+                  spider
+                })
+              }
+            }
+          })
+
+          continueSpidering(sendResponse)
+
+          return
+      }
+
+      chrome.runtime.onMessage.addListener(updateListener)
 
       continueSpidering(sendResponse)
 
