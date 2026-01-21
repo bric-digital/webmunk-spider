@@ -3,6 +3,8 @@ import webmunkCorePlugin, { WebmunkServiceWorkerModule, registerWebmunkModule, d
 
 export class WebmunkSpider {
   checkLogin(): Promise<boolean> {
+    console.log('fecthing promise')
+
     return new Promise<boolean>((resolve) => {
       const loginListener = (message:any, sender:any, sendResponse:(response:any) => void):boolean => {
         console.log('loginListener')
@@ -21,6 +23,8 @@ export class WebmunkSpider {
 
         return false
       }
+
+      console.log('registered listener')
 
       chrome.runtime.onMessage.addListener(loginListener)
 
