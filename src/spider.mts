@@ -66,7 +66,9 @@ $.expr.pseudos.containsInsensitive = $.expr.createPseudo(function (query) {
 })
 
 $(() => {
-    manager.fetchResults()
+  console.log('[spider-page] manager.fetchResults()')
+
+  manager.fetchResults()
 })
 
 export default manager
