@@ -51,15 +51,19 @@ export class WebmunkSpider {
     return false
   }
 
-  name(): string {
+  name():string {
     return 'Webmunk Spider (Implement in subclasses)'
   }
 
-  loginUrl(): string {
+  toString():string {
+    return this.name()
+  }
+
+  loginUrl():string {
     return 'https://www.example.com'
   }
 
-  urlPatterns(): string[] {
+  urlPatterns():string[] {
     return []
   }
 }
@@ -176,6 +180,8 @@ class WebmunkSpiderModule extends WebmunkServiceWorkerModule {
 
           spider.checkLogin()
             .then((ready:boolean) => {
+              console.log(`check complete ${spider} login: ${ready}`)
+
               if (ready === false) {
                 response.issues.push({
                   message: `${spider.name()}: Login required.`,
