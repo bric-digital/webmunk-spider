@@ -5,7 +5,7 @@ export class WebmunkSpider {
   checkLogin(): Promise<boolean> {
     return new Promise<boolean>((resolve) => {
       const loginListener = (message:any, sender:any, sendResponse:(response:any) => void):boolean => {
-        if (message.messageType === 'spiderResults' && message.spiderName === this.name()) {
+        if (message.messageType === 'spiderLoginResults' && message.spiderName === this.name()) {
           if (message.loggedIn === false) {
             resolve(false)
           } else {
@@ -13,9 +13,11 @@ export class WebmunkSpider {
           }
 
           chrome.runtime.onMessage.removeListener(loginListener)
+
+          return true
         }
 
-        return true
+        return false
       }
 
       chrome.runtime.onMessage.addListener(loginListener)
