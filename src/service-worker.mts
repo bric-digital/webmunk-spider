@@ -265,6 +265,9 @@ class WebmunkSpiderModule extends WebmunkServiceWorkerModule {
       console.log('Setting up listener for spiderSources')
 
       const updateListener = (message:any, sender:any, sendResponse:(response:any) => void):boolean => {
+        console.log('updateListener MESSAGE')
+        console.log(message)
+
         if (message.messageType === 'spiderSources') {
           this.registeredSpiders.forEach((spider:WebmunkSpider) => {
             if (spider.name() === message.spiderName) {
