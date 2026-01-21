@@ -171,6 +171,8 @@ class WebmunkSpiderModule extends WebmunkServiceWorkerModule {
         } else {
           let spider = toCheck.pop()
 
+          console.log('CHECKING LOGIN ON ${spider}...')
+
           spider.checkLogin()
             .then((ready:boolean) => {
               if (ready === false) {
