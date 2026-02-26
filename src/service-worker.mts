@@ -97,46 +97,48 @@ class REXSpiderModule extends REXServiceWorkerModule {
       urlPatterns.push(...spider.urlPatterns())
     }
 
-    chrome.webRequest.onCompleted.addListener(async function (details) {
-      if (details.frameId > 0) {
-        if (['sub_frame', 'main_frame', 'script'].includes(details.type)) {
-          self.setTimeout(() => {
-            chrome.scripting.executeScript({
-                target: {
-                  tabId: details.tabId,
-                  allFrames: false,
-                  frameIds: [details.frameId]
-                },
-                files: ['/js/spider/bundle.js']
-              })
-          }, 2500);
+    if (urlPatterns.length > 0) {
+      chrome.webRequest.onCompleted.addListener(async function (details) {
+        if (details.frameId > 0) {
+          if (['sub_frame', 'main_frame', 'script'].includes(details.type)) {
+            self.setTimeout(() => {
+              chrome.scripting.executeScript({
+                  target: {
+                    tabId: details.tabId,
+                    allFrames: false,
+                    frameIds: [details.frameId]
+                  },
+                  files: ['/js/spider/bundle.js']
+                })
+            }, 2500);
+          }
         }
-      }
-    }, {
-      urls: urlPatterns
-    }, ['responseHeaders', 'extraHeaders'])
+      }, {
+        urls: urlPatterns
+      }, ['responseHeaders', 'extraHeaders'])
 
-    chrome.webRequest.onErrorOccurred.addListener(async function (details) {
-      const skip = ['net::ERR_ABORTED', 'net::ERR_CACHE_MISS']
+      chrome.webRequest.onErrorOccurred.addListener(async function (details) {
+        const skip = ['net::ERR_ABORTED', 'net::ERR_CACHE_MISS']
 
-      if (skip.includes(details.error)) {
-        // Skip
-      } else {
-        console.log(`[rex-spider] Error on request:`)
-        console.log(details)
+        if (skip.includes(details.error)) {
+          // Skip
+        } else {
+          console.log(`[rex-spider] Error on request:`)
+          console.log(details)
 
-        // for (let i = 0; i < this.registeredSpiders.length; i++) {
-        //   const spider:REXSpider = this.registeredSpiders[i]
+          // for (let i = 0; i < this.registeredSpiders.length; i++) {
+          //   const spider:REXSpider = this.registeredSpiders[i]
 
-        //   if (spider.matchesUrl(details.url)) {
-        //     console.log(`[Spider / ${spider.name()}] Error on request:`)
-        //     console.log(details)
-        //   }
-        // }
-      }
-    }, {
-      urls: urlPatterns
-    }, ['extraHeaders'])
+          //   if (spider.matchesUrl(details.url)) {
+          //     console.log(`[Spider / ${spider.name()}] Error on request:`)
+          //     console.log(details)
+          //   }
+          // }
+        }
+      }, {
+        urls: urlPatterns
+      }, ['extraHeaders'])
+    }
   }
 
   refreshConfiguration() {
